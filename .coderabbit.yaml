@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: en-US
+
+reviews:
+  profile: assertive
+  request_changes_workflow: true   # lets "error" pre-merge checks block merges
+  high_level_summary: true
+  sequence_diagrams: true
+  auto_review:
+    enabled: true
+    drafts: false
+
+  path_filters:
+    - "!src/main/resources/static/resources/css/**"   # generated CSS
+
+  path_instructions:
+    - path: "src/main/java/**/owner/**"
+      instructions: |
+        Owner, pet and visit data is personal and medical data.
+        Enforce docs/privacy-guidelines.md: no personal data in logs,
+        access checks on every endpoint that returns owner data,
+        and past visits must never be edited or deleted.
+    - path: "src/main/java/**/*Repository.java"
+      instructions: |
+        Queries must use Spring Data method names or parameterized @Query.
+        Flag any string-built SQL or JPQL and any unpaginated list query.
+
+  pre_merge_checks:
+    title:
+      mode: warning
+      requirements: "Start with a type prefix such as feat:, fix: or chore:."
+    custom_checks:
+      - name: "No personal data in logs"
+        mode: error
+        instructions: |
+          Fail if any added or changed log statement (log.*, logger.*, System.out.println)
+          may include owner first name, last name, address, city or telephone.
+          Pass if log statements include only IDs or no owner fields.
+      - name: "Visit history is immutable"
+        mode: warning
+        instructions: |
+          Fail if the PR adds code that updates or deletes existing Visit records
+          (for example visitRepository.save on an existing visit, delete methods,
+          or setters called on a loaded Visit). Pass if visits are only created.
+
+knowledge_base:
+  code_guidelines:
+    filePatterns:
+      - files: "docs/privacy-guidelines.md"
+        applyTo: "src/**"
