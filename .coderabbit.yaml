@@ -19,6 +19,15 @@ knowledge_base:
       # so map the privacy guidelines in docs/ onto the source code explicitly.
       - files: "docs/privacy-guidelines.md"
         applyTo: "src/**"
+  # PetClinic: Jira and MCP default to "auto", which is off for public repos.
+  # Turn them on so reviews read Jira issues (project PET) and the Confluence
+  # PRDs available through the Atlassian MCP connection.
+  jira:
+    usage: enabled
+    project_keys:
+      - "PET"
+  mcp:
+    usage: enabled
 
 reviews:
   enable_prompt_for_ai_agents: true # Agents can read & address the issues CodeRabbit flags
@@ -112,6 +121,13 @@ reviews:
       instructions: >
         - Queries must use Spring Data derived method names or parameterized @Query; flag any SQL or JPQL built by string concatenation
         - Flag list or search queries that are not paginated
+
+    # PetClinic: check every PR against its Jira issue and Confluence PRD.
+    - path: 'src/**'
+      instructions: >
+        - Read the Jira issue linked in the PR description (project PET) and the Confluence PRD it links to
+        - Check the change against every PRD requirement (R1, R2, ...) and every acceptance criterion in the issue
+        - When a change breaks a requirement or criterion, cite its ID, for example "breaks R7 (no personal data in logs)"
 
     # PetClinic: generated CSS is not reviewed.
   path_filters:
