@@ -9,7 +9,7 @@
 inheritance: true
 
 knowledge_base:
-  automatic_repository_linking: true # Automatically detect related repositories to flag breaking changes & downstream impact
+  automatic_linking_mode: auto # Automatically detect related repositories to flag breaking changes & downstream impact
   code_guidelines:
     filePatterns:
       - "**/*.md"
