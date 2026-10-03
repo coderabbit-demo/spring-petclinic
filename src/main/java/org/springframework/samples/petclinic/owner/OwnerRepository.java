@@ -15,11 +15,14 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Repository class for <code>Owner</code> domain objects. All method names are compliant
@@ -58,5 +61,13 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * input for id)
 	 */
 	Optional<Owner> findById(Integer id);
+
+	/**
+	 * Search for {@link Owner}s by last name or telephone.
+	 * @param searchTerm the search term to match against last name or telephone
+	 * @return a List of matching {@link Owner}s (or an empty List if none found)
+	 */
+	@Query("SELECT o FROM Owner o WHERE o.lastName LIKE CONCAT('%', :searchTerm, '%') OR o.telephone LIKE CONCAT('%', :searchTerm, '%')")
+	List<Owner> searchByLastNameOrTelephone(@Param("searchTerm") String searchTerm);
 
 }
