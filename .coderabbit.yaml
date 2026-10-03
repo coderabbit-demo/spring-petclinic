@@ -29,7 +29,8 @@ reviews:
   pre_merge_checks:
     override_requested_reviewers_only: false
     custom_checks:
-      - mode: warning
+      # PetClinic: error (Ian's default is warning) so privacy violations block the merge in demos.
+      - mode: error
         name: Sensitive Data Protection and Privacy
         instructions: >
           - Flag exposure of personally identifiable information (PII), intellectual property, source code, trade secrets, internal documentation, business strategy, customer data, credentials, or other confidential company assets to unintended users, tenants, systems, services, vendors, AI models, or public interfaces
