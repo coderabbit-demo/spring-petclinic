@@ -19,6 +19,15 @@ knowledge_base:
       # so map the privacy guidelines in docs/ onto the source code explicitly.
       - files: "docs/privacy-guidelines.md"
         applyTo: "src/**"
+  # PetClinic: Jira and MCP default to "auto", which is off for public repos.
+  # Turn them on so reviews read Jira issues (project PET) and the Confluence
+  # PRDs available through the Atlassian MCP connection.
+  jira:
+    usage: enabled
+    project_keys:
+      - "PET"
+  mcp:
+    usage: enabled
 
 reviews:
   enable_prompt_for_ai_agents: true # Agents can read & address the issues CodeRabbit flags
