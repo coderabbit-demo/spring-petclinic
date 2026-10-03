@@ -6,7 +6,9 @@
 # additions specific to this demo repo.
 
 # Inherit Global Standards & Governance Rules from CodeRabbit Admins
-inheritance: true
+# PetClinic: off, so demo reviews use only this file and stay predictable
+# regardless of the org's UI settings.
+inheritance: false
 
 knowledge_base:
   automatic_linking_mode: auto # Automatically detect related repositories to flag breaking changes & downstream impact
@@ -172,7 +174,8 @@ reviews:
   # - On GitHub/Bitbucket, it will Request Changes and block when issues are flagged
   # - Workflows that auto-merge after only one approver are impacted by this
   # - Must be set to true if CodeRabbit is a required reviewer per branch protection
-  request_changes_workflow: false
+  # PetClinic: on, to demo CodeRabbit requesting changes and blocking merges.
+  request_changes_workflow: true
 
 tone_instructions: >
   - Indicate if the code is in the path that would cause a production outage or not.
