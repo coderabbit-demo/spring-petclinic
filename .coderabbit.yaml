@@ -28,6 +28,15 @@ knowledge_base:
       - "PET"
   mcp:
     usage: enabled
+  # PetClinic: multi-repo analysis. Check API changes against the apps that consume them.
+  linked_repositories:
+    - repository: "coderabbit-demo/petclinic-vet-directory"
+      instructions: >
+        React + TypeScript app that consumes this repo's GET /vets JSON endpoint.
+        It depends on the response shape { vetList: [ { id, firstName, lastName,
+        specialties: [ { id, name } ], nrOfSpecialties } ] } (see src/types.ts and src/api.ts).
+        Flag any change to VetController, Vets, Vet, Specialty or Person that alters
+        this JSON shape, field names or types, and name the files in this app that would break.
 
 reviews:
   enable_prompt_for_ai_agents: true # Agents can read & address the issues CodeRabbit flags
