@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.model.Person;
 
@@ -63,8 +65,26 @@ public class Vet extends Person {
 			.collect(Collectors.toList());
 	}
 
+	@JsonIgnore
 	public int getNrOfSpecialties() {
 		return getSpecialtiesInternal().size();
+	}
+
+	@JsonProperty("name")
+	public String getName() {
+		return this.getFirstName() + " " + this.getLastName();
+	}
+
+	@JsonIgnore
+	@Override
+	public String getFirstName() {
+		return super.getFirstName();
+	}
+
+	@JsonIgnore
+	@Override
+	public String getLastName() {
+		return super.getLastName();
 	}
 
 	public void addSpecialty(Specialty specialty) {
