@@ -202,3 +202,8 @@ chat:
   art: false
   # CodeRabbit will automatically respond to humans in PR discussions
   auto_reply: true
+  # PetClinic: let PR chat create Jira issues (needs the native Jira connection).
+  # "auto" turns this off for public repositories.
+  integrations:
+    jira:
+      usage: enabled
