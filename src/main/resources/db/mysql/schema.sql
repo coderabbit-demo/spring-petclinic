@@ -52,5 +52,6 @@ CREATE TABLE IF NOT EXISTS visits (
   pet_id INT(4) UNSIGNED,
   visit_date DATE,
   description VARCHAR(255),
+  status VARCHAR(20) DEFAULT 'COMPLETED',
   FOREIGN KEY (pet_id) REFERENCES pets(id)
 ) engine=InnoDB;

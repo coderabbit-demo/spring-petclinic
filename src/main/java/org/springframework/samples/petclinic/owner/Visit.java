@@ -22,6 +22,8 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -44,11 +46,16 @@ public class Visit extends BaseEntity {
 	@Size(max = 255)
 	private String description;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
+	private VisitStatus status = VisitStatus.COMPLETED;
+
 	/**
 	 * Creates a new instance of Visit for tomorrow
 	 */
 	public Visit() {
 		this.date = LocalDate.now().plusDays(1);
+		this.status = VisitStatus.COMPLETED;
 	}
 
 	public LocalDate getDate() {
@@ -65,6 +72,21 @@ public class Visit extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public VisitStatus getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(VisitStatus status) {
+		this.status = status;
+	}
+
+	/**
+	 * Enum representing the status of a visit.
+	 */
+	public enum VisitStatus {
+		BOOKED, COMPLETED, CANCELLED
 	}
 
 }

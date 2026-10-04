@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.system;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -11,11 +12,12 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.Locale;
 
 /**
- * Configures internationalization (i18n) support for the application.
+ * Configures internationalization (i18n) support and CORS for the application.
  *
  * <p>
- * Handles loading language-specific messages, tracking the user's language, and allowing
- * language changes via the URL parameter (e.g., <code>?lang=de</code>).
+ * Handles loading language-specific messages, tracking the user’s language, allowing
+ * language changes via the URL parameter (e.g., <code>?lang=de</code>), and enabling
+ * CORS for mobile app API requests.
  * </p>
  *
  * @author Anuj Ashok Potdar
@@ -55,6 +57,19 @@ public class WebConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
+	}
+
+	/**
+	 * Configures CORS for the mobile app API endpoints.
+	 * @param registry the CORS registry
+	 */
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/api/**")
+			.allowedOrigins("*")
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+			.allowedHeaders("*")
+			.maxAge(3600);
 	}
 
 }
