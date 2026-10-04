@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.vet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -32,6 +33,7 @@ public class Vets {
 
 	private List<Vet> vets;
 
+	@JsonProperty("vets")
 	@XmlElement
 	public List<Vet> getVetList() {
 		if (vets == null) {
