@@ -33,7 +33,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * JWT Authentication Filter for extracting and validating JWT tokens from request headers.
+ * JWT Authentication Filter for extracting and validating JWT tokens from request
+ * headers.
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -61,10 +62,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 						.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
 				}
 
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-						username, null, authorities);
-				SecurityContextHolder.getContext()
-					.setAuthentication(authentication);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,
+						null, authorities);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
 		catch (Exception ex) {

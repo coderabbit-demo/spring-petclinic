@@ -59,11 +59,7 @@ public class SecurityConfiguration {
 			.roles("ADMIN")
 			.build();
 
-		UserDetails vet = User.builder()
-			.username("vet")
-			.password(passwordEncoder().encode("vet"))
-			.roles("VET")
-			.build();
+		UserDetails vet = User.builder().username("vet").password(passwordEncoder().encode("vet")).roles("VET").build();
 
 		UserDetails frontDesk = User.builder()
 			.username("frontdesk")
@@ -84,7 +80,7 @@ public class SecurityConfiguration {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 			.exceptionHandling(
-				exceptionHandling -> exceptionHandling.authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
+					exceptionHandling -> exceptionHandling.authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/api/auth/token", "/", "/login", "/favicon.ico", "/webjars/**", "/resources/**")
@@ -111,8 +107,10 @@ public class SecurityConfiguration {
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		// Form login for web UI
-		http.formLogin(
-			formLogin -> formLogin.loginPage("/login").permitAll().defaultSuccessUrl("/").failureUrl("/login?error"));
+		http.formLogin(formLogin -> formLogin.loginPage("/login")
+			.permitAll()
+			.defaultSuccessUrl("/")
+			.failureUrl("/login?error"));
 
 		http.logout(logout -> logout.logoutUrl("/logout").permitAll().logoutSuccessUrl("/"));
 
