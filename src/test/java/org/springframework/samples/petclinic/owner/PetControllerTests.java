@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -87,6 +88,7 @@ class PetControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void initCreationForm() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID))
 			.andExpect(status().isOk())
@@ -95,6 +97,7 @@ class PetControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processCreationFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "Betty")
@@ -108,6 +111,7 @@ class PetControllerTests {
 	class ProcessCreationFormHasErrors {
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processCreationFormWithBlankName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "\t \n")
@@ -121,6 +125,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processCreationFormWithDuplicateName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "petty")
@@ -134,6 +139,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processCreationFormWithMissingPetType() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).param("name", "Betty")
@@ -147,6 +153,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processCreationFormWithInvalidBirthDate() throws Exception {
 			LocalDate currentDate = LocalDate.now();
 			String futureBirthDate = currentDate.plusMonths(1).toString();
@@ -163,6 +170,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processCreationFormWithDataIntegrityViolation() throws Exception {
 			given(owners.saveAndFlush(any(Owner.class)))
 				.willThrow(new DataIntegrityViolationException("Duplicate key: unique_owner_pet_name"));
@@ -179,6 +187,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void initUpdateForm() throws Exception {
 			mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID))
 				.andExpect(status().isOk())
@@ -189,6 +198,7 @@ class PetControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processUpdateFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", "Betty")
@@ -199,6 +209,7 @@ class PetControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processUpdateFormWithSameName() throws Exception {
 		mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", "petty") // same
 																														// name
@@ -215,6 +226,7 @@ class PetControllerTests {
 	class ProcessUpdateFormHasErrors {
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processUpdateFormWithDuplicateName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID + 1)
@@ -230,6 +242,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processUpdateFormWithInvalidBirthDate() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", " ")
@@ -242,6 +255,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processUpdateFormWithBlankName() throws Exception {
 			mockMvc
 				.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).param("name", "  ")
@@ -254,6 +268,7 @@ class PetControllerTests {
 		}
 
 		@Test
+		@WithMockUser(roles = "ADMIN")
 		void processUpdateFormWithDataIntegrityViolation() throws Exception {
 			given(owners.saveAndFlush(any(Owner.class)))
 				.willThrow(new DataIntegrityViolationException("Duplicate key: unique_owner_pet_name"));

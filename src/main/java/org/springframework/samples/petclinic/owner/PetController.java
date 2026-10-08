@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
@@ -98,6 +99,7 @@ class PetController {
 	}
 
 	@GetMapping("/pets/new")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String initCreationForm(Owner owner, ModelMap model) {
 		Pet pet = new Pet();
 		owner.addPet(pet);
@@ -105,6 +107,7 @@ class PetController {
 	}
 
 	@PostMapping("/pets/new")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 
@@ -137,11 +140,13 @@ class PetController {
 	}
 
 	@GetMapping("/pets/{petId}/edit")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String initUpdateForm() {
 		return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/pets/{petId}/edit")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String processUpdateForm(Owner owner, @Valid Pet pet, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 

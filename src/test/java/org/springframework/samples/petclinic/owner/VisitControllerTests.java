@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -66,6 +67,7 @@ class VisitControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "FRONT_DESK")
 	void initNewVisitForm() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
 			.andExpect(status().isOk())
@@ -73,6 +75,7 @@ class VisitControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "FRONT_DESK")
 	void processNewVisitFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
@@ -84,6 +87,7 @@ class VisitControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "FRONT_DESK")
 	void processNewVisitFormHasErrors() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID).param("name",
@@ -94,6 +98,7 @@ class VisitControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "FRONT_DESK")
 	void processNewVisitFormHasErrorsWhenVisitDateIsNotInFuture() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
@@ -107,6 +112,7 @@ class VisitControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "FRONT_DESK")
 	void processNewVisitFormHasErrorsWhenDescriptionIsTooLong() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)

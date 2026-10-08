@@ -24,6 +24,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -104,6 +105,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void initCreationForm() throws Exception {
 		mockMvc.perform(get("/owners/new"))
 			.andExpect(status().isOk())
@@ -112,6 +114,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processCreationFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/new").param("firstName", "Joe")
@@ -123,6 +126,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processCreationFormHasErrors() throws Exception {
 		mockMvc
 			.perform(post("/owners/new").param("firstName", "Joe").param("lastName", "Bloggs").param("city", "London"))
@@ -134,6 +138,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processCreationFormRejectsCityLongerThanColumn() throws Exception {
 		mockMvc
 			.perform(post("/owners/new").param("firstName", "Joe")
@@ -149,6 +154,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processCreationFormRejectsAddressLongerThanColumn() throws Exception {
 		mockMvc
 			.perform(post("/owners/new").param("firstName", "Joe")
@@ -235,6 +241,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void initUpdateOwnerForm() throws Exception {
 		mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
 			.andExpect(status().isOk())
@@ -248,6 +255,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processUpdateOwnerFormSuccess() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
@@ -260,6 +268,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processUpdateOwnerFormUnchangedSuccess() throws Exception {
 		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID))
 			.andExpect(status().is3xxRedirection())
@@ -267,6 +276,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processUpdateOwnerFormHasErrors() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).param("firstName", "Joe")
@@ -296,6 +306,7 @@ class OwnerControllerTests {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	void processUpdateOwnerFormWithIdMismatch() throws Exception {
 		int pathOwnerId = 1;
 
